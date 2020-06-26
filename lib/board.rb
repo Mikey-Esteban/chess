@@ -19,20 +19,27 @@ class Board
 
   def populate_with_pieces
     populate_no_pieces
-    # show_board_no_pieces
     @empty_board.each do |k,v|
-      # p k.include?(7)
       if k.include?(7) || k.include?(2)
         if v.length == 3
-          result = replace(3, :pawn, empty_board[k])
-          empty_board[k] = result
+          empty_board[k] = add_piece(3, :pawn, empty_board[k])
         else
-          result = replace(4, :pawn, empty_board[k])
-          empty_board[k] = result
+          empty_board[k] = add_piece(4, :pawn, empty_board[k])
         end
-        p k
-        # p @empty_board[k]
-      else
+      elsif k.include?(8)
+        if k.include?('a')
+          empty_board[k] = add_piece(3, :rook, empty_board[k])
+        elsif k.include?('b') || k.include?('g')
+          empty_board[k] = add_piece(4, :bishop, empty_board[k])
+        elsif k.include?('c') || k.include?('f')
+          empty_board[k] = add_piece(4, :knight, empty_board[k])
+        elsif k.include?('d')
+          empty_board[k] = add_piece(4, :queen, empty_board[k])
+        elsif k.include?('e')
+          empty_board[k] = add_piece(4, :king, empty_board[k])
+        elsif k.include?('h')
+          empty_board[k] = add_piece(4, :rook, empty_board[k])
+        end
       end
     end
     show_board_no_pieces
@@ -41,17 +48,30 @@ class Board
 
   private
 
-  def replace(length, piece, key)
+  def add_piece(length, piece, key)
     if length == 3
-      first = key[0]
-      second = @pieces[piece]
-      third = key[2]
+      if piece == :knight
+        first = key[0]
+        second = @pieces[piece][0]
+        third = @pieces[piece][1]
+      else
+        first = key[0]
+        second = @pieces[piece]
+        third = key[2]
+      end
       result = first+second+third
     else
-      first = key[0]
-      second = key[1]
-      third = @pieces[piece]
-      fourth = key[3]
+      if piece == :knight
+        first = key[0]
+        second = key[1]
+        third = @pieces[piece][0]
+        fourth = @pieces[piece][1]
+      else
+        first = key[0]
+        second = key[1]
+        third = @pieces[piece]
+        fourth = key[3]
+      end
       result = first+second+third+fourth
     end
     result
