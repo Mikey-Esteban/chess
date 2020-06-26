@@ -1,10 +1,10 @@
 # create and populate an empty board
 
 class Board
-  attr_accessor :empty_board
+  attr_accessor :board
 
   def initialize
-    @empty_board = {}
+    @board = {}
     @pieces = {
       :rook   => 'r'  ,
       :knight => 'kn' ,
@@ -13,18 +13,17 @@ class Board
       :king   => 'K'  ,
       :pawn   => 'p'
     }
-    # self.populate_no_pieces
   end
 
 
   def populate_chessmen
     populate_no_pieces
-    @empty_board.each do |k,v|
+    @board.each do |k,v|
       if k.include?(7) || k.include?(2)
         if v.length == 3
-          empty_board[k] = add_chessmen(3, :pawn, empty_board[k])
+          board[k] = add_chessmen(3, :pawn, board[k])
         else
-          empty_board[k] = add_chessmen(4, :pawn, empty_board[k])
+          board[k] = add_chessmen(4, :pawn, board[k])
         end
       elsif k.include?(8)
         fill_pieces(k)
@@ -33,24 +32,24 @@ class Board
       end
     end
     show_board_no_pieces
-    @empty_board
+    @board
   end
 
   private
 
   def fill_pieces(key)
     if key.include?('a')
-      empty_board[key] = add_chessmen(3, :rook, empty_board[key])
+      board[key] = add_chessmen(3, :rook, board[key])
     elsif key.include?('b') || key.include?('g')
-      empty_board[key] = add_chessmen(4, :knight, empty_board[key])
+      board[key] = add_chessmen(4, :knight, board[key])
     elsif key.include?('c') || key.include?('f')
-      empty_board[key] = add_chessmen(4, :bishop, empty_board[key])
+      board[key] = add_chessmen(4, :bishop, board[key])
     elsif key.include?('d')
-      empty_board[key] = add_chessmen(4, :queen, empty_board[key])
+      board[key] = add_chessmen(4, :queen, board[key])
     elsif key.include?('e')
-      empty_board[key] = add_chessmen(4, :king, empty_board[key])
+      board[key] = add_chessmen(4, :king, board[key])
     elsif key.include?('h')
-      empty_board[key] = add_chessmen(4, :rook, empty_board[key])
+      board[key] = add_chessmen(4, :rook, board[key])
     end
   end
 
@@ -94,16 +93,16 @@ class Board
     row.each_with_index do |num, i|
       col.each_with_index do |letter, j|
         i.even? ? flag = j.even? : flag = j.odd?
-        k = [num, letter]
+        k = [letter, num]
         # print " i:#{i},j:#{j} |"
         if j == 0
-          flag ? @empty_board[k] = first_white : @empty_board[k] = first_black
+          flag ? @board[k] = first_white : @board[k] = first_black
         else
-          flag ? @empty_board[k] = white : @empty_board[k] = black
+          flag ? @board[k] = white : @board[k] = black
         end
       end
     end
-    @empty_board
+    @board
   end
 
   def show_board_no_pieces
@@ -112,10 +111,10 @@ class Board
     bottom_axis = "\n       a   b   c   d   e   f   g   h"
     result = ""
     result += top_axis
-    @empty_board.each do |k,v|
-      result += "  #{k[0]}   " + v if k.include?('a')
+    @board.each do |k,v|
+      result += "  #{k[1]}   " + v if k.include?('a')
       result += v if !k.include?('a') && !k.include?('h')
-      result += v + "    #{k[0]}\n" if k.include?('h')
+      result += v + "    #{k[1]}\n" if k.include?('h')
     end
     result += bottom_axis
     puts result
@@ -123,8 +122,4 @@ class Board
     return nil
   end
 
-
 end
-
-board = Board.new
-board.populate_chessmen
