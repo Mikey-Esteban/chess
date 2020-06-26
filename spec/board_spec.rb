@@ -2,7 +2,7 @@ require './lib/board.rb'
 
 describe Board do
   describe '#populate_no_pieces' do
-    it "returns an empty 8x8 hash ['b'-8 rows, a-h cols] of a chess board" do
+    it "returns an empty 8x8 hash ['0-8' rows, 'a-h' cols] of a chess board" do
       board = Board.new
       expect(board.populate_no_pieces).to eq(
         {
@@ -15,6 +15,24 @@ describe Board do
           [2, 'a']=>"[ ]", [2, 'b']=>"[ ]", [2, 'c']=>"[ ]", [2, 'd']=>"[ ]", [2, 'e']=>"[ ]", [2, 'f']=>"[ ]", [2, 'g']=>"[ ]", [2, 'h']=>"[ ]",
           [1, 'a']=>"[ ]", [1, 'b']=>"[ ]", [1, 'c']=>"[ ]", [1, 'd']=>"[ ]", [1, 'e']=>"[ ]", [1, 'f']=>"[ ]", [1, 'g']=>"[ ]", [1, 'h']=>"[ ]"
         }
+      )
+    end
+  end
+
+  describ '#show_board_no_pieces' do
+    it "returns the empty chess board" do
+      board = Board.new
+      expect(board.show_board_no_pieces).to eq(
+        "
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ][ ][ ][ ]
+        "
       )
     end
   end
