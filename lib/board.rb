@@ -27,9 +27,9 @@ class Board
           empty_board[k] = add_chessmen(4, :pawn, empty_board[k])
         end
       elsif k.include?(8)
-        fill_pieces(k, 'black')
+        fill_pieces(k)
       elsif k.include?(1)
-        fill_pieces(k, 'white')
+        fill_pieces(k)
       end
     end
     show_board_no_pieces
@@ -38,19 +38,17 @@ class Board
 
   private
 
-  def fill_pieces(key, color)
+  def fill_pieces(key)
     if key.include?('a')
       empty_board[key] = add_chessmen(3, :rook, empty_board[key])
     elsif key.include?('b') || key.include?('g')
-      empty_board[key] = add_chessmen(4, :bishop, empty_board[key])
-    elsif key.include?('c') || key.include?('f')
       empty_board[key] = add_chessmen(4, :knight, empty_board[key])
+    elsif key.include?('c') || key.include?('f')
+      empty_board[key] = add_chessmen(4, :bishop, empty_board[key])
     elsif key.include?('d')
-      empty_board[key] = add_chessmen(4, :queen, empty_board[key]) if color == 'black'
-      empty_board[key] = add_chessmen(4, :king, empty_board[key]) if color == 'white'
+      empty_board[key] = add_chessmen(4, :queen, empty_board[key])
     elsif key.include?('e')
-      empty_board[key] = add_chessmen(4, :king, empty_board[key]) if color == 'black'
-      empty_board[key] = add_chessmen(4, :queen, empty_board[key]) if color == 'white'
+      empty_board[key] = add_chessmen(4, :king, empty_board[key])
     elsif key.include?('h')
       empty_board[key] = add_chessmen(4, :rook, empty_board[key])
     end
