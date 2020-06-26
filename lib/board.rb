@@ -17,7 +17,7 @@ class Board
   end
 
 
-  def populate_with_pieces
+  def populate_chessmen
     populate_no_pieces
     @empty_board.each do |k,v|
       if k.include?(7) || k.include?(2)
@@ -122,4 +122,4 @@ class Board
 end
 
 board = Board.new
-board.populate_with_pieces
+board.populate_chessmen
