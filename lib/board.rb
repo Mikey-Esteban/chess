@@ -108,16 +108,16 @@ class Board
 
   def show_board_no_pieces
     puts
-    legend_top = "       a   b   c   d   e   f   g   h\n\n"
-    legend_bottom = "\n       a   b   c   d   e   f   g   h"
+    top_axis = "       a   b   c   d   e   f   g   h\n\n"
+    bottom_axis = "\n       a   b   c   d   e   f   g   h"
     result = ""
-    result += legend_top
+    result += top_axis
     @empty_board.each do |k,v|
       result += "  #{k[0]}   " + v if k.include?('a')
       result += v if !k.include?('a') && !k.include?('h')
       result += v + "    #{k[0]}\n" if k.include?('h')
     end
-    result += legend_bottom
+    result += bottom_axis
     puts result
     puts
     return nil
