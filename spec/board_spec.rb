@@ -19,20 +19,18 @@ describe Board do
     end
   end
 
-  describ '#show_board_no_pieces' do
+  describe '#show_board_no_pieces' do
     it "returns the empty chess board" do
       board = Board.new
       expect(board.show_board_no_pieces).to eq(
-        "
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ][ ][ ][ ]
-        "
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"
+        "[ ][ ][ ][ ][ ][ ][ ][ ]"    
       )
     end
   end
