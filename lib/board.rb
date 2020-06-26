@@ -21,5 +21,18 @@ class Board
     @empty_board
   end
 
+  def show_board_no_pieces
+    result = ""
+    @empty_board.each do |k,v|
+      result += v unless k.include?('h')
+      result += v+"\n" if k.include?('h')
+    end
+    puts result
+    return nil
+  end
+
 
 end
+
+board = Board.new
+board.show_board_no_pieces
