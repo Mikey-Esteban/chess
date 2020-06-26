@@ -13,4 +13,8 @@ class Pawn < Chessmen
     @position[1] = (@position[1].to_i + 1).to_s if @color == 'white'
     @position[1] = (@position[1].to_i - 1).to_s if @color == 'black'
   end
+
+  def take(to_position)
+    @position = to_position
+  end
 end
