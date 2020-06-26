@@ -5,7 +5,56 @@ class Board
 
   def initialize
     @empty_board = {}
-    self.populate_no_pieces
+    @pieces = {
+      :rook   => 'r'  ,
+      :knight => 'kn' ,
+      :bishop => 'b'  ,
+      :queen  => 'Q'  ,
+      :king   => 'K'  ,
+      :pawn   => 'p'
+    }
+    # self.populate_no_pieces
+  end
+
+
+  def populate_with_pieces
+    populate_no_pieces
+    # show_board_no_pieces
+    @empty_board.each do |k,v|
+      # p k.include?(7)
+      if k.include?(7) || k.include?(2)
+        if v.length == 3
+          result = replace(3, :pawn, empty_board[k])
+          empty_board[k] = result
+        else
+          result = replace(4, :pawn, empty_board[k])
+          empty_board[k] = result
+        end
+        p k
+        # p @empty_board[k]
+      else
+      end
+    end
+    show_board_no_pieces
+    @empty_board
+  end
+
+  private
+
+  def replace(length, piece, key)
+    if length == 3
+      first = key[0]
+      second = @pieces[piece]
+      third = key[2]
+      result = first+second+third
+    else
+      first = key[0]
+      second = key[1]
+      third = @pieces[piece]
+      fourth = key[3]
+      result = first+second+third+fourth
+    end
+    result
   end
 
   def populate_no_pieces
@@ -45,4 +94,4 @@ class Board
 end
 
 board = Board.new
-board.show_board_no_pieces
+board.populate_with_pieces
