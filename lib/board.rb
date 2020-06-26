@@ -19,15 +19,15 @@ class Board
   def populate_chessmen
     populate_no_pieces
     @board.each do |k,v|
-      if k.include?(7) || k.include?(2)
+      if k.include?('7') || k.include?('2')
         if v.length == 3
           board[k] = add_chessmen(3, :pawn, board[k])
         else
           board[k] = add_chessmen(4, :pawn, board[k])
         end
-      elsif k.include?(8)
+      elsif k.include?('8')
         fill_pieces(k)
-      elsif k.include?(1)
+      elsif k.include?('1')
         fill_pieces(k)
       end
     end
@@ -93,7 +93,9 @@ class Board
     row.each_with_index do |num, i|
       col.each_with_index do |letter, j|
         i.even? ? flag = j.even? : flag = j.odd?
-        k = [letter, num]
+        k = ''
+        k += letter
+        k += num.to_s
         # print " i:#{i},j:#{j} |"
         if j == 0
           flag ? @board[k] = first_white : @board[k] = first_black
@@ -102,6 +104,7 @@ class Board
         end
       end
     end
+    # @board = @board.transform_keys(&:to_sym)
     @board
   end
 
