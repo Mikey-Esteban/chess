@@ -2,7 +2,7 @@ require './lib/board.rb'
 
 describe Board do
   describe '#populate_no_pieces' do
-    it "returns an empty 8x8 hash ['0-8' rows, 'a-h' cols] of a chess board" do
+    xit "returns an empty 8x8 hash ['0-8' rows, 'a-h' cols] of a chess board" do
       board = Board.new
       expect(board.populate_no_pieces).to eq(
         {
@@ -19,8 +19,26 @@ describe Board do
     end
   end
 
+  describe '#populate_chessmen' do
+    it "returns an 8x8 hash ['0-8' rows, 'a-h' cols] of a chess board with pieces in starting positions" do
+      board = Board.new
+      expect(board.populate_chessmen).to eq(
+        {
+          [8, 'a']=>" r ", [8, 'b']=>"|#kn", [8, 'c']=>"| b ", [8, 'd']=>"|#Q#", [8, 'e']=>"| K ", [8, 'f']=>"|#b#", [8, 'g']=>"| kn", [8, 'h']=>"|#r#",
+          [7, 'a']=>"#p#", [7, 'b']=>"| p ", [7, 'c']=>"|#p#", [7, 'd']=>"| p ", [7, 'e']=>"|#p#", [7, 'f']=>"| p ", [7, 'g']=>"|#p#", [7, 'h']=>"| p ",
+          [6, 'a']=>"   ", [6, 'b']=>"|###", [6, 'c']=>"|   ", [6, 'd']=>"|###", [6, 'e']=>"|   ", [6, 'f']=>"|###", [6, 'g']=>"|   ", [6, 'h']=>"|###",
+          [5, 'a']=>"###", [5, 'b']=>"|   ", [5, 'c']=>"|###", [5, 'd']=>"|   ", [5, 'e']=>"|###", [5, 'f']=>"|   ", [5, 'g']=>"|###", [5, 'h']=>"|   ",
+          [4, 'a']=>"   ", [4, 'b']=>"|###", [4, 'c']=>"|   ", [4, 'd']=>"|###", [4, 'e']=>"|   ", [4, 'f']=>"|###", [4, 'g']=>"|   ", [4, 'h']=>"|###",
+          [3, 'a']=>"###", [3, 'b']=>"|   ", [3, 'c']=>"|###", [3, 'd']=>"|   ", [3, 'e']=>"|###", [3, 'f']=>"|   ", [3, 'g']=>"|###", [3, 'h']=>"|   ",
+          [2, 'a']=>" p ", [2, 'b']=>"|#p#", [2, 'c']=>"| p ", [2, 'd']=>"|#p#", [2, 'e']=>"| p ", [2, 'f']=>"|#p#", [2, 'g']=>"| p ", [2, 'h']=>"|#p#",
+          [1, 'a']=>"#r#", [1, 'b']=>"| kn", [1, 'c']=>"|#b#", [1, 'd']=>"| Q ", [1, 'e']=>"|#K#", [1, 'f']=>"| b ", [1, 'g']=>"|#kn", [1, 'h']=>"| r "
+        }
+      )
+    end
+  end
+
   describe '#show_board_no_pieces' do
-    it "returns the empty chess board" do
+    xit "returns the empty chess board" do
       board = Board.new
       expect(board.show_board_no_pieces).to eq(nil)
     end
