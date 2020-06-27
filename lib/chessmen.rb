@@ -27,7 +27,7 @@ class Chessmen
     end
   end
 
-  def populate_white_chessmen
+  def populate_chessmen(color)
     col = ['a','b','c','d','e','f','g','h']
     row = ['1','2','3','4','5','6','7','8']
     chessmen = {
@@ -40,32 +40,33 @@ class Chessmen
     }
 
     8.times do |i|
-      position = col[i] + '2'
-      pawn = Pawn.new(position, 'white')
+      position = col[i] + '2' if color == 'white'
+      position = col[i] + '7' if color == 'black'
+      pawn = Pawn.new(position, color)
       chessmen[:pawns] << pawn
-      position = col[i] + '1'
+      position = col[i] + '1' if color == 'white'
+      position = col[i] + '8' if color == 'black'
       if col[i] == 'a' || col[i] == 'h'
-        rook = Rook.new(position, 'white')
+        rook = Rook.new(position, color)
         chessmen[:rooks] << rook
       elsif col[i] == 'b' || col[i] ==  'g'
-        knight = Knight.new(position, 'white')
+        knight = Knight.new(position, color)
         chessmen[:knights] << knight
       elsif col[i] == 'c' || col[i] ==  'f'
-        bishop = Bishop.new(position, 'white')
+        bishop = Bishop.new(position, color)
         chessmen[:bishops] << bishop
       elsif col[i] == 'd'
-        queen = Queen.new(position, 'white')
+        queen = Queen.new(position, color)
         chessmen[:queens] << queen
       elsif col[i] == 'e'
-        king = King.new(position, 'white')
+        king = King.new(position, color)
         chessmen[:kings] << king
       end
     end
-    @white = chessmen
+    @white = chessmen if color == 'white'
+    @black = chessmen if color == 'black'
   end
 
-  def populate_black_chessmen
-  end
 end
 
 class Pawn < Chessmen
@@ -144,5 +145,8 @@ end
 
 
 chessmen = Chessmen.new
-chessmen.populate_white_chessmen
+chessmen.populate_chessmen('white')
+chessmen.populate_chessmen('black')
 chessmen.white
+puts
+chessmen.black
