@@ -1,54 +1,67 @@
 class Chessmen
+  # attr_accessor :white, :black
 
   def initialize
-    @white = {
-
-    }
-    @black = {
-
-    }
+    @white = {}
+    @black = {}
     # @pawn = Pawn.new()
+  end
+
+  def white
+    @white.each do |k,v|
+      p k
+      v.each do |piece|
+        print piece.position + ", "
+      end
+      puts
+    end
+  end
+
+  def black
+    @black.each do |k,v|
+      p k
+      v.each do |piece|
+        print piece.position + ", "
+      end
+      puts
+    end
   end
 
   def populate_white_chessmen
     col = ['a','b','c','d','e','f','g','h']
     row = ['1','2','3','4','5','6','7','8']
-    chessmen = [
-      @pawns = [],
-      @rooks = [],
-      @knights = [],
-      @bishops = [],
-      @queens = [],
-      @kings = []
-    ]
+    chessmen = {
+      :pawns => [],
+      :rooks => [],
+      :knights => [],
+      :bishops => [],
+      :queens => [],
+      :kings => []
+    }
 
     8.times do |i|
       position = col[i] + '2'
       pawn = Pawn.new(position, 'white')
-      @pawns << pawn
+      chessmen[:pawns] << pawn
       position = col[i] + '1'
       if col[i] == 'a' || col[i] == 'h'
         rook = Rook.new(position, 'white')
-        @rooks << rook
+        chessmen[:rooks] << rook
       elsif col[i] == 'b' || col[i] ==  'g'
         knight = Knight.new(position, 'white')
-        @knights << knight
+        chessmen[:knights] << knight
       elsif col[i] == 'c' || col[i] ==  'f'
         bishop = Bishop.new(position, 'white')
-        @bishops << bishop
+        chessmen[:bishops] << bishop
       elsif col[i] == 'd'
         queen = Queen.new(position, 'white')
-        @queens << queen
+        chessmen[:queens] << queen
       elsif col[i] == 'e'
         king = King.new(position, 'white')
-        @kings << king
+        chessmen[:kings] << king
       end
     end
-
-    chessmen.each do |piece|
-      puts piece
-    end
-
+    @white = chessmen
   end
 
   def populate_black_chessmen
@@ -131,4 +144,5 @@ end
 
 
 chessmen = Chessmen.new
-p chessmen.populate_white_chessmen
+chessmen.populate_white_chessmen
+chessmen.white
