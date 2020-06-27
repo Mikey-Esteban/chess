@@ -4,7 +4,8 @@ class Chessmen
   def initialize
     @white = {}
     @black = {}
-    # @pawn = Pawn.new()
+    populate_chessmen('white')
+    populate_chessmen('black')
   end
 
   def white
@@ -26,6 +27,8 @@ class Chessmen
       puts
     end
   end
+
+  private
 
   def populate_chessmen(color)
     col = ['a','b','c','d','e','f','g','h']
@@ -145,8 +148,6 @@ end
 
 
 chessmen = Chessmen.new
-chessmen.populate_chessmen('white')
-chessmen.populate_chessmen('black')
 chessmen.white
 puts
 chessmen.black
