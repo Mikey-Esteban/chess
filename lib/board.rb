@@ -1,5 +1,6 @@
 # create and populate an empty board
 require "./lib/chessmen.rb"
+require "./lib/pawn.rb"
 
 class Board
   attr_accessor :board, :player_white, :player_black, :chessmen
