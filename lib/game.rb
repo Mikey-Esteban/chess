@@ -47,8 +47,8 @@ class Game
 
   def player_move(start_node, end_node)
     node =  @gb.board[start_node][1] unless @gb.board[start_node][1].nil?
-    p node
-    # method_to_run[type]
+    is_valid = node.move_valid?(start_node, end_node)
+    p is_valid
 
   end
 
