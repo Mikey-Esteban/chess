@@ -35,6 +35,31 @@ class Game
     @gb.board
   end
 
+  def player_turn
+    puts "Play move from start square to end square eg. 'a5 to a6'"
+    print "What is your move? "
+    player_move = gets.chomp
+    start, fin = player_move.split(' to ')
+    p start
+    p fin
+    player_move(start, fin)
+  end
+
+  def player_move(start_node, end_node)
+    method_to_run = {
+      "pawn"=> Pawn.move_valid?    ,
+      # "rook"=>Rook.move_valid?    ,
+      # "knight"=>Knight.move_valid?,
+      # "bishop"=>Bishop.move_valid?,
+      # "queen"=>Queen.move_valid?  ,
+      # "king"=>King.move_valid?
+    }
+    type =  @gb.board[start_node][1] unless @gb.board[start_node][1].nil?
+    p type
+    method_to_run[type]
+
+  end
+
   private
 
   def grab_chessmen_position_name
@@ -83,5 +108,6 @@ class Game
 end
 
 game = Game.new
-# p game.gb.board
+p game.gb.board
 game.populate_board
+game.player_turn
