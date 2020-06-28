@@ -80,8 +80,12 @@ class Pawn < Chessmen
     @color = color
   end
 
-  def self.move_valid?
-    p "In Pawn.move_valid Class method!"
+  def move_valid?(start_node, end_node)
+    p "In Pawn.move_valid Instance method!"
+    diff = end_node[1].to_i - start_node[1].to_i  if @color == 'white'
+    diff = end_node[1].to_i  - start_node[1].to_i  if @color == 'black'
+
+    diff == 1 || diff == -1 ? true : false
   end
 end
 
