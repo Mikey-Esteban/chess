@@ -79,6 +79,10 @@ class Pawn < Chessmen
     @position = position
     @color = color
   end
+
+  def self.move_valid?
+    p "In Pawn.move_valid Class method!"
+  end
 end
 
 class Rook < Chessmen
