@@ -26,8 +26,8 @@ class Game
     @gb.board.each do |position, value_pair|     # value pair = [board piece, occupancy]
       chessmen_attributes.each do |piece_attr|
         if piece_attr.include?(position)
-          value_pair[1] = piece_attr[1]   # occupancy = name
-          value_pair[0] = place_chessmen(value_pair[0].length, piece_attr[1], value_pair[0])
+          value_pair[1] = piece_attr[1]   # occupancy = node
+          value_pair[0] = place_chessmen(value_pair[0].length, piece_attr[1].name, value_pair[0])
         end
       end
     end
@@ -46,17 +46,9 @@ class Game
   end
 
   def player_move(start_node, end_node)
-    method_to_run = {
-      "pawn"=> Pawn.move_valid?    ,
-      # "rook"=>Rook.move_valid?    ,
-      # "knight"=>Knight.move_valid?,
-      # "bishop"=>Bishop.move_valid?,
-      # "queen"=>Queen.move_valid?  ,
-      # "king"=>King.move_valid?
-    }
-    type =  @gb.board[start_node][1] unless @gb.board[start_node][1].nil?
-    p type
-    method_to_run[type]
+    node =  @gb.board[start_node][1] unless @gb.board[start_node][1].nil?
+    p node
+    # method_to_run[type]
 
   end
 
@@ -68,9 +60,10 @@ class Game
     players.each do |player|
       player.each do |type, pieces|
         pieces.each do |piece|
-          name = piece.name
+          # name = piece.name
           position = piece.position
-          attributes << [position, name]
+          node = piece
+          attributes << [position, node]
         end
       end
     end
@@ -108,6 +101,7 @@ class Game
 end
 
 game = Game.new
-p game.gb.board
+# p game.gb.board
 game.populate_board
+# p game.gb.board
 game.player_turn
