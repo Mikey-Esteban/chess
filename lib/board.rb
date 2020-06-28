@@ -2,7 +2,7 @@ class Board
   attr_accessor :board
 
   def initialize
-    @board = {}
+    @board = {}   # position => ['board piece', occupancy]
     populate_board_on_init
   end
 
@@ -20,7 +20,6 @@ class Board
         k = ''
         k += letter
         k += num.to_s
-        # print " i:#{i},j:#{j} |"
         if j == 0
           flag ? @board[k] = [first_white, nil] : @board[k] = [first_black, nil]
         else

@@ -6,7 +6,6 @@ class Game
   attr_accessor :gb, :player_white, :player_black, :chessmen
 
   def initialize
-    # @board = {}   # position => ['board piece', occupancy]
     @gb = Board.new
     @pieces = {
       "rook"   => 'r'  ,
@@ -19,7 +18,6 @@ class Game
     @chessmen = Chessmen.new
     @player_white = @chessmen.white
     @player_black = @chessmen.black
-    # populate_board_on_init
   end
 
 
