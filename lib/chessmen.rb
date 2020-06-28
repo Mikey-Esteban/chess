@@ -1,5 +1,5 @@
 class Chessmen
-  # attr_accessor :white, :black
+  attr_accessor :white, :black
 
   def initialize
     @white = {}
@@ -8,7 +8,7 @@ class Chessmen
     populate_chessmen('black')
   end
 
-  def white
+  def print_white
     @white.each do |k,v|
       p k
       v.each do |piece|
@@ -18,7 +18,7 @@ class Chessmen
     end
   end
 
-  def black
+  def print_black
     @black.each do |k,v|
       p k
       v.each do |piece|
@@ -32,7 +32,6 @@ class Chessmen
 
   def populate_chessmen(color)
     col = ['a','b','c','d','e','f','g','h']
-    row = ['1','2','3','4','5','6','7','8']
     chessmen = {
       :pawns => [],
       :rooks => [],
@@ -73,7 +72,7 @@ class Chessmen
 end
 
 class Pawn < Chessmen
-  attr_accessor :position, :name
+  attr_accessor :position, :name, :color
 
   def initialize(position, color)
     @name = 'pawn'
@@ -97,7 +96,7 @@ class Pawn < Chessmen
 end
 
 class Rook < Chessmen
-  attr_accessor :position, :name
+  attr_accessor :position, :name, :color
 
   def initialize(position, color)
     @name = 'rook'
@@ -107,7 +106,7 @@ class Rook < Chessmen
 end
 
 class Knight < Chessmen
-  attr_accessor :position, :name
+  attr_accessor :position, :name, :color
 
   def initialize(position, color)
     @name = 'knight'
@@ -117,7 +116,7 @@ class Knight < Chessmen
 end
 
 class Bishop < Chessmen
-  attr_accessor :position, :name
+  attr_accessor :position, :name, :color
 
   def initialize(position, color)
     @name = 'bishop'
@@ -127,7 +126,7 @@ class Bishop < Chessmen
 end
 
 class Queen < Chessmen
-  attr_accessor :position, :name
+  attr_accessor :position, :name, :color
 
   def initialize(position, color)
     @name = 'queen'
@@ -137,7 +136,7 @@ class Queen < Chessmen
 end
 
 class King < Chessmen
-  attr_accessor :position, :name
+  attr_accessor :position, :name, :color
 
   def initialize(position, color)
     @name = 'king'
@@ -145,9 +144,3 @@ class King < Chessmen
     @color = color
   end
 end
-
-
-chessmen = Chessmen.new
-chessmen.white
-puts
-chessmen.black
