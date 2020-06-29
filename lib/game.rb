@@ -1,5 +1,5 @@
 # create and populate an empty board
-require "./lib/chessmen.rb"
+require "./lib/chessmen/chessmen.rb"
 require "./lib/board.rb"
 
 class Game
