@@ -61,14 +61,6 @@ class Game
     end
 
     return "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
-    # is_valid = start_node.move_valid(start_square, end_square)
-    # is_valid = start_node.move_valid(start_square, end_node) if start_node.is_a?(Pawn) && !end_node.nil?
-
-
-
-    # node =  @gb.board[start_square][1] unless @gb.board[start_square][1].nil?
-    # is_valid = node.move_valid?(start_square, end_square)
-    # p is_valid
   end
 
   def grab_node(square)
