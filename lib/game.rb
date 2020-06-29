@@ -40,8 +40,6 @@ class Game
     print "What is your move? "
     player_move = gets.chomp
     start, fin = player_move.split(' to ')
-    p start
-    p fin
     player_move(start, fin)
   end
 
@@ -49,18 +47,40 @@ class Game
     start_node = grab_node(start_square)
     end_node = grab_node(end_square)
 
+    result = is_node_between?(start_square, end_square)
+    p "is node between?: #{result}"
 
     return "Your own piece is in the way!" if start_node && end_node && start_node.color == end_node.color
 
     if start_node.is_a?(Pawn) && !end_node.nil?
       is_valid = start_node.pawn_take_valid?(start_square, end_square)
-      return "#{start_node.name} cant make that move!" unless is_valid
+      # return "#{start_node.name} cant make that move!" unless is_valid
+      return is_valid if is_valid != true
     else
       is_valid = start_node.move_valid?(start_square, end_square)
-      return "#{start_node.name} cant make that move!" unless is_valid
+      return is_valid if is_valid != true
+      # return "#{start_node.name} cant make that move!" unless is_valid
     end
 
     return "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
+  end
+
+  def is_node_between?(start_square, end_square)
+    start_node = @gb.board[start_square][1]
+
+    return false if start_square == end_square
+
+    if start_node.is_a?(Rook)
+      next_square = start_node.check_next_square(start_square, end_square)
+      p "next square after: #{next_square}"
+      next_node = grab_node(next_square)
+      p next_square
+      p next_node
+      return true unless next_node.nil?
+      is_node_between?(start_square, next_square)
+    end
+
+    # return true
   end
 
   def grab_node(square)
