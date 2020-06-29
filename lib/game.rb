@@ -47,19 +47,21 @@ class Game
     start_node = grab_node(start_square)
     end_node = grab_node(end_square)
 
-    result = is_node_between?(start_square, end_square)
-    p "is node between?: #{result}"
-
     return "Your own piece is in the way!" if start_node && end_node && start_node.color == end_node.color
 
     if start_node.is_a?(Pawn) && !end_node.nil?
       is_valid = start_node.pawn_take_valid?(start_square, end_square)
       # return "#{start_node.name} cant make that move!" unless is_valid
-      return is_valid if is_valid != true
+      return "move not valid" if is_valid != true
+      result = is_node_between?(start_square, end_square)
+      p "is node between?: #{result}"
+      return "#{start_node.name} cant make that move!" if result
     else
       is_valid = start_node.move_valid?(start_square, end_square)
-      return is_valid if is_valid != true
-      # return "#{start_node.name} cant make that move!" unless is_valid
+      return "move not valid" if is_valid != true
+      result = is_node_between?(start_square, end_square)
+      p "is node between?: #{result}"
+      return "#{start_node.name} cant make that move!" if result
     end
 
     return "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
