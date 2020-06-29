@@ -45,11 +45,34 @@ class Game
     player_move(start, fin)
   end
 
-  def player_move(start_node, end_node)
-    node =  @gb.board[start_node][1] unless @gb.board[start_node][1].nil?
-    is_valid = node.move_valid?(start_node, end_node)
-    p is_valid
+  def player_move(start_square, end_square)
+    start_node = grab_node(start_square)
+    end_node = grab_node(end_square)
 
+
+    return "Your own piece is in the way!" if start_node && end_node && start_node.color == end_node.color
+
+    if start_node.is_a?(Pawn) && !end_node.nil?
+      is_valid = start_node.pawn_take_valid?(start_square, end_square)
+      return "#{start_node.name} cant make that move!" unless is_valid
+    else
+      is_valid = start_node.move_valid?(start_square, end_square)
+      return "#{start_node.name} cant make that move!" unless is_valid
+    end
+
+    return "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
+    # is_valid = start_node.move_valid(start_square, end_square)
+    # is_valid = start_node.move_valid(start_square, end_node) if start_node.is_a?(Pawn) && !end_node.nil?
+
+
+
+    # node =  @gb.board[start_square][1] unless @gb.board[start_square][1].nil?
+    # is_valid = node.move_valid?(start_square, end_square)
+    # p is_valid
+  end
+
+  def grab_node(square)
+    @gb.board[square][1]
   end
 
   private
@@ -103,5 +126,9 @@ end
 game = Game.new
 # p game.gb.board
 game.populate_board
+
+# node = game.grab_node('d2')
+# p node.is_a?(Pawn)
 # p game.gb.board
-game.player_turn
+
+p game.player_turn
