@@ -58,7 +58,7 @@ class Game
       return "#{start_node.name} cant make that move!" if result
     else
       is_valid = start_node.move_valid?(start_square, end_square)
-      return "move not valid" if is_valid != true
+      return is_valid if is_valid != true
       result = is_node_between?(start_square, end_square)
       p "is node between?: #{result}"
       return "#{start_node.name} cant make that move!" if result
@@ -72,7 +72,7 @@ class Game
 
     return false if start_square == end_square
 
-    if start_node.is_a?(Rook)
+    if start_node.is_a?(Rook) || start_node.is_a?(Bishop)
       next_square = start_node.check_next_square(start_square, end_square)
       p "next square after: #{next_square}"
       next_node = grab_node(next_square)
