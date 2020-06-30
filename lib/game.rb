@@ -51,11 +51,8 @@ class Game
 
     if start_node.is_a?(Pawn) && !end_node.nil?
       is_valid = start_node.pawn_take_valid?(start_square, end_square)
-      # return "#{start_node.name} cant make that move!" unless is_valid
-      return "move not valid" if is_valid != true
-      result = is_node_between?(start_square, end_square)
-      p "is node between?: #{result}"
-      return "#{start_node.name} cant make that move!" if result
+      return is_valid if is_valid != true
+      p "dont need to check node between for #{start_node.name}"
     elsif start_node.is_a?(Queen)
       is_valid = start_node.move_valid?(start_square, end_square)
       return "Queen made a bad move!" if is_valid == 0
@@ -66,11 +63,11 @@ class Game
       end
       p "is node between?: #{result}"
       return "#{start_node.name} cant make that move!" if result
-    elsif start_node.is_a?(King) || start_node.is_a?(Knight)
+    elsif start_node.is_a?(King) || start_node.is_a?(Knight) || start_node.is_a?(Pawn)
       is_valid = start_node.move_valid?(start_square, end_square)
       return is_valid if is_valid != true
       p "dont need to check node between for #{start_node.name}"
-    else
+    else    # for Rook, Bishop
       is_valid = start_node.move_valid?(start_square, end_square)
       return is_valid if is_valid != true
       result = is_node_between?(start_square, end_square)
@@ -81,6 +78,8 @@ class Game
     return "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
   end
 
+  private
+
   def is_node_between?(start_square, end_square, queen_checker = nil)
     start_node = @gb.board[start_square][1]
 
@@ -88,33 +87,23 @@ class Game
 
     if start_node.is_a?(Rook) || start_node.is_a?(Bishop)
       next_square = start_node.check_next_square(start_square, end_square)
-      p "next square after: #{next_square}"
       next_node = grab_node(next_square)
-      p next_square
-      p next_node
+
       return true unless next_node.nil?
       is_node_between?(start_square, next_square)
     elsif start_node.is_a?(Queen)
       next_square = start_node.check_next_square_diagonal(start_square, end_square) if queen_checker == 1
       next_square = start_node.check_next_square_hv(start_square, end_square) if queen_checker == -1
-      p "next square after: #{next_square}"
       next_node = grab_node(next_square)
-      p next_square
-      p next_node
+
       return true unless next_node.nil?
       is_node_between?(start_square, next_square, queen_checker)
-
     end
-
-
-    # return true
   end
 
   def grab_node(square)
     @gb.board[square][1]
   end
-
-  private
 
   def grab_chessmen_position_name
     players = [self.player_white, self.player_black]
