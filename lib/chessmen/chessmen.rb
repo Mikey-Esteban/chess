@@ -3,6 +3,7 @@ require './lib/chessmen/rook.rb'
 require './lib/chessmen/bishop.rb'
 require './lib/chessmen/queen.rb'
 require './lib/chessmen/king.rb'
+require './lib/chessmen/knight.rb'
 
 class Chessmen
   attr_accessor :white, :black
