@@ -66,6 +66,10 @@ class Game
       end
       p "is node between?: #{result}"
       return "#{start_node.name} cant make that move!" if result
+    elsif start_node.is_a?(King) || start_node.is_a?(Knight)
+      is_valid = start_node.move_valid?(start_square, end_square)
+      return is_valid if is_valid != true
+      p "dont need to check node between for #{start_node.name}"
     else
       is_valid = start_node.move_valid?(start_square, end_square)
       return is_valid if is_valid != true

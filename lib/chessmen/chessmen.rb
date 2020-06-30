@@ -117,15 +117,15 @@ end
 #   end
 # end
 
-class Knight < Chessmen
-  attr_accessor :position, :name, :color
-
-  def initialize(position, color)
-    @name = 'knight'
-    @position = position
-    @color = color
-  end
-end
+# class Knight < Chessmen
+#   attr_accessor :position, :name, :color
+#
+#   def initialize(position, color)
+#     @name = 'knight'
+#     @position = position
+#     @color = color
+#   end
+# end
 
 # class Bishop < Chessmen
 #   attr_accessor :position, :name, :color
