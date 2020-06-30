@@ -20,12 +20,22 @@ class Game
     @player_black = @chessmen.black
   end
 
+  def print_game_board
+    @gb.board.each do |spot, value|
+      result = ''
+      result += spot
+      result += ' => '
+      result += value.join(',')
+      p result
+    end
+  end
 
   def populate_board
     chessmen_attributes = grab_chessmen_position_name
     @gb.board.each do |position, value_pair|     # value pair = [board piece, occupancy]
       chessmen_attributes.each do |piece_attr|
         if piece_attr.include?(position)
+          # p position
           value_pair[1] = piece_attr[1]   # occupancy = node
           value_pair[0] = place_chessmen(value_pair[0].length, piece_attr[1].name, value_pair[0])
         end
@@ -38,12 +48,53 @@ class Game
   def player_turn
     puts "Play move from start square to end square eg. 'a5 to a6'"
     print "What is your move? "
-    player_move = gets.chomp
-    start, fin = player_move.split(' to ')
-    player_move(start, fin)
+    player_decision = gets.chomp
+    start, fin = player_decision.split(' to ')
+    flag = can_player_move?(start, fin)
+    if flag == true
+      player_move(start, fin)
+    else
+      p flag
+    end
+    populate_board
   end
 
   def player_move(start_square, end_square)
+    start_node = grab_node(start_square)
+    end_node = grab_node(end_square)
+
+    # # MAKE INTO A NEW FUNCTION
+    if end_node
+      player = @player_black if end_node.color == 'black'
+      player = @player_white if end_node.color == 'white'
+      player.each do |k,v|
+        if v.include?(end_node)
+          p "found a node in array!!"
+          v.each_with_index do |chessman, i|
+            if chessman == end_node
+              p "found a match!"
+              v.delete_at(i)
+            end
+          end
+        end
+      end
+    end
+
+    update_start_square_block =  @gb.empty_board[start_square][0]
+    update_start_square_node = @gb.empty_board[start_square][1]
+    update_end_square_block = @gb.empty_board[end_square][0]
+    update_end_square_node = start_node
+
+    @gb.board[end_square][1] = update_end_square_node       # changing the node value of end_square occupancy to start_square occupancy
+    @gb.board[end_square][1].position = end_square          # update the node position from start_square to end_square
+    @gb.board[end_square][0] = update_end_square_block
+    @gb.board[start_square][0] = update_start_square_block  # update the start_square block to equal its empty_board version block
+    @gb.board[start_square][1] = update_start_square_node   # update the start_square node to equal its empty_board version node
+
+    @gb.board
+  end
+
+  def can_player_move?(start_square, end_square)
     start_node = grab_node(start_square)
     end_node = grab_node(end_square)
 
@@ -75,7 +126,9 @@ class Game
       return "#{start_node.name} cant make that move!" if result
     end
 
-    return "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
+    p "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
+    return true
+
   end
 
   private
@@ -83,19 +136,17 @@ class Game
   def is_node_between?(start_square, end_square, queen_checker = nil)
     start_node = @gb.board[start_square][1]
 
-    return false if start_square == end_square
-
     if start_node.is_a?(Rook) || start_node.is_a?(Bishop)
       next_square = start_node.check_next_square(start_square, end_square)
       next_node = grab_node(next_square)
-
+      return false if next_square == start_square
       return true unless next_node.nil?
       is_node_between?(start_square, next_square)
     elsif start_node.is_a?(Queen)
       next_square = start_node.check_next_square_diagonal(start_square, end_square) if queen_checker == 1
       next_square = start_node.check_next_square_hv(start_square, end_square) if queen_checker == -1
       next_node = grab_node(next_square)
-
+      return false if next_square == start_square
       return true unless next_node.nil?
       is_node_between?(start_square, next_square, queen_checker)
     end
@@ -155,8 +206,8 @@ game = Game.new
 # p game.gb.board
 game.populate_board
 
-# node = game.grab_node('d2')
-# p node.is_a?(Pawn)
-# p game.gb.board
+game.player_turn
+game.player_turn
+game.player_turn
 
-p game.player_turn
+# game.print_game_board

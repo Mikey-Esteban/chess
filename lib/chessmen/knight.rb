@@ -13,8 +13,6 @@ class Knight
     return "knight cant make this column move" if column_diff < 1 || column_diff > 2
     row_diff = (end_square[1].to_i - start_square[1].to_i).abs
     return "knight cant make this row move" if row_diff < 1 || row_diff > 2
-    p column_diff
-    p row_diff
 
     return "knight cant make this overall move" unless row_diff == 1 if column_diff == 2
     return "knight cant make this overall move" unless row_diff == 2 if column_diff == 1

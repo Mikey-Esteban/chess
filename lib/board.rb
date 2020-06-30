@@ -1,12 +1,14 @@
 class Board
-  attr_accessor :board
+  attr_accessor :empty_board, :board
 
   def initialize
+    @empty_board = {}
     @board = {}   # position => ['board piece', occupancy]
-    populate_board_on_init
+    populate_board_on_init(empty_board)
+    populate_board_on_init(board)
   end
 
-  def populate_board_on_init
+  def populate_board_on_init(a_board)
     row = [8,7,6,5,4,3,2,1]
     col = ['a','b','c','d','e','f','g','h']
     white = "|   "
@@ -21,13 +23,13 @@ class Board
         k += letter
         k += num.to_s
         if j == 0
-          flag ? @board[k] = [first_white, nil] : @board[k] = [first_black, nil]
+          flag ? a_board[k] = [first_white, nil] : a_board[k] = [first_black, nil]
         else
-          flag ? @board[k] = [white, nil] : @board[k] = [black, nil]
+          flag ? a_board[k] = [white, nil] : a_board[k] = [black, nil]
         end
       end
     end
-    @board
+    a_board
   end
 
   def print_board

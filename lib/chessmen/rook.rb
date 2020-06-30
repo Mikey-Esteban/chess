@@ -21,14 +21,16 @@ class Rook
     # p "In Rook.check_next_square Instance method!"
     row_diff = start_square[1] != end_square[1] if start_square[1] != end_square[1]
     column_diff =  start_square[0] != end_square[0] if start_square[0] != end_square[0]
-    next_square = end_square
+    next_square = "  "
     # p "next square before: #{next_square}"
     if row_diff
       next_square[1] = (end_square[1].to_i - 1).to_s if start_square[1] < end_square[1]
       next_square[1] = (end_square[1].to_i + 1).to_s if start_square[1] > end_square[1]
+      next_square[0] = end_square[0]
     elsif column_diff
       next_square[0] = (end_square[0].ord - 1).chr if start_square[0].ord < end_square[0].ord
       next_square[0] = (end_square[0].ord + 1).chr if start_square[0].ord > end_square[0].ord
+      next_square[1] = end_square[1]
     end
     next_square
   end
