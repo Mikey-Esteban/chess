@@ -2,6 +2,7 @@ require './lib/chessmen/pawn.rb'
 require './lib/chessmen/rook.rb'
 require './lib/chessmen/bishop.rb'
 require './lib/chessmen/queen.rb'
+require './lib/chessmen/king.rb'
 
 class Chessmen
   attr_accessor :white, :black
@@ -145,12 +146,12 @@ end
 #   end
 # end
 
-class King < Chessmen
-  attr_accessor :position, :name, :color
-
-  def initialize(position, color)
-    @name = 'king'
-    @position = position
-    @color = color
-  end
-end
+# class King < Chessmen
+#   attr_accessor :position, :name, :color
+#
+#   def initialize(position, color)
+#     @name = 'king'
+#     @position = position
+#     @color = color
+#   end
+# end
