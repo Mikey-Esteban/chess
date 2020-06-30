@@ -11,7 +11,7 @@ class Pawn
     p "In Pawn.move_valid Instance method!"
     diff = end_square[1].to_i - start_square[1].to_i
 
-    return false if start_square[0] != end_square[0]
+    return "Pawn cant make a non vertical move!" if start_square[0] != end_square[0]
     return diff == 1 if self.color == 'white'
     return diff == -1 if self.color == 'black'
   end
