@@ -56,6 +56,16 @@ class Game
       result = is_node_between?(start_square, end_square)
       p "is node between?: #{result}"
       return "#{start_node.name} cant make that move!" if result
+    elsif start_node.is_a?(Queen)
+      is_valid = start_node.move_valid?(start_square, end_square)
+      return "Queen made a bad move!" if is_valid == 0
+      if is_valid == 1
+        result = is_node_between?(start_square, end_square, 1)
+      elsif is_valid == -1
+        result = is_node_between?(start_square, end_square, -1)
+      end
+      p "is node between?: #{result}"
+      return "#{start_node.name} cant make that move!" if result
     else
       is_valid = start_node.move_valid?(start_square, end_square)
       return is_valid if is_valid != true
@@ -67,7 +77,7 @@ class Game
     return "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
   end
 
-  def is_node_between?(start_square, end_square)
+  def is_node_between?(start_square, end_square, queen_checker = nil)
     start_node = @gb.board[start_square][1]
 
     return false if start_square == end_square
@@ -80,7 +90,18 @@ class Game
       p next_node
       return true unless next_node.nil?
       is_node_between?(start_square, next_square)
+    elsif start_node.is_a?(Queen)
+      next_square = start_node.check_next_square_diagonal(start_square, end_square) if queen_checker == 1
+      next_square = start_node.check_next_square_hv(start_square, end_square) if queen_checker == -1
+      p "next square after: #{next_square}"
+      next_node = grab_node(next_square)
+      p next_square
+      p next_node
+      return true unless next_node.nil?
+      is_node_between?(start_square, next_square, queen_checker)
+
     end
+
 
     # return true
   end
