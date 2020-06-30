@@ -62,23 +62,7 @@ class Game
   def player_move(start_square, end_square)
     start_node = grab_node(start_square)
     end_node = grab_node(end_square)
-
-    # # MAKE INTO A NEW FUNCTION
-    if end_node
-      player = @player_black if end_node.color == 'black'
-      player = @player_white if end_node.color == 'white'
-      player.each do |k,v|
-        if v.include?(end_node)
-          p "found a node in array!!"
-          v.each_with_index do |chessman, i|
-            if chessman == end_node
-              p "found a match!"
-              v.delete_at(i)
-            end
-          end
-        end
-      end
-    end
+    delete_chessman(end_node) if end_node
 
     update_start_square_block =  @gb.empty_board[start_square][0]
     update_start_square_node = @gb.empty_board[start_square][1]
@@ -149,6 +133,23 @@ class Game
       return false if next_square == start_square
       return true unless next_node.nil?
       is_node_between?(start_square, next_square, queen_checker)
+    end
+  end
+
+  def delete_chessman(node)
+    # # MAKE INTO A NEW FUNCTION
+    player = @player_black if node.color == 'black'
+    player = @player_white if node.color == 'white'
+    player.each do |k,v|
+      if v.include?(node)
+        p "found a node in array!!"
+        v.each_with_index do |chessman, i|
+          if chessman == node
+            p "found a match!"
+            v.delete_at(i)
+          end
+        end
+      end
     end
   end
 
