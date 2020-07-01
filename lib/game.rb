@@ -59,6 +59,8 @@ class Game
     populate_board
   end
 
+  private
+
   def player_move(start_square, end_square)
     start_node = grab_node(start_square)
     end_node = grab_node(end_square)
@@ -114,8 +116,6 @@ class Game
     return true
 
   end
-
-  private
 
   def is_node_between?(start_square, end_square, queen_checker = nil)
     start_node = @gb.board[start_square][1]
