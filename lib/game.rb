@@ -46,10 +46,18 @@ class Game
   end
 
   def player_turn
-    puts "Play move from start square to end square eg. 'a5 to a6'"
-    print "What is your move? "
-    player_decision = gets.chomp
-    start, fin = player_decision.split(' to ')
+    cols = 'abcdefgh'
+    rows = '12345678'
+
+    while true
+      puts "Play move from start square to end square eg. 'a5 to a6'"
+      print "What is your move? "
+      player_decision = gets.chomp
+      start, fin = player_decision.split(' to ')
+      break if cols.include?(start[0]) && rows.include?(start[1]) && cols.include?(fin[0]) && rows.include?(fin[1])
+      puts "Sorry, please enter a valid input! :)"
+    end
+
     flag = can_player_move?(start, fin)
     if flag == true
       player_move(start, fin)
@@ -89,7 +97,7 @@ class Game
     if start_node.is_a?(Pawn) && !end_node.nil?
       is_valid = start_node.pawn_take_valid?(start_square, end_square)
       return is_valid if is_valid != true
-      p "dont need to check node between for #{start_node.name}"
+      # p "dont need to check node between for #{start_node.name}"
     elsif start_node.is_a?(Queen)
       is_valid = start_node.move_valid?(start_square, end_square)
       return "Queen made a bad move!" if is_valid == 0
@@ -98,17 +106,17 @@ class Game
       elsif is_valid == -1
         result = is_node_between?(start_square, end_square, -1)
       end
-      p "is node between?: #{result}"
+      # p "is node between?: #{result}"
       return "#{start_node.name} cant make that move!" if result
     elsif start_node.is_a?(King) || start_node.is_a?(Knight) || start_node.is_a?(Pawn)
       is_valid = start_node.move_valid?(start_square, end_square)
       return is_valid if is_valid != true
-      p "dont need to check node between for #{start_node.name}"
+      # p "dont need to check node between for #{start_node.name}"
     else    # for Rook, Bishop
       is_valid = start_node.move_valid?(start_square, end_square)
       return is_valid if is_valid != true
       result = is_node_between?(start_square, end_square)
-      p "is node between?: #{result}"
+      # p "is node between?: #{result}"
       return "#{start_node.name} cant make that move!" if result
     end
 
@@ -142,10 +150,10 @@ class Game
     player = @player_white if node.color == 'white'
     player.each do |k,v|
       if v.include?(node)
-        p "found a node in array!!"
+        # p "found a node in array!!"
         v.each_with_index do |chessman, i|
           if chessman == node
-            p "found a match!"
+            # p "found a match!"
             v.delete_at(i)
           end
         end

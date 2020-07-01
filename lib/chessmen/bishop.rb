@@ -8,7 +8,7 @@ class Bishop
   end
 
   def move_valid?(start_square, end_square)
-    p "In Bishop.move_valid Instance method!"
+    # p "In Bishop.move_valid Instance method!"
     same_row = true if start_square[1] == end_square[1]
     same_column = true if start_square[0] == end_square[0]
     return "#{self.name} cant make a non diagonal move" if same_column || same_row

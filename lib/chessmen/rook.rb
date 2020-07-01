@@ -8,7 +8,7 @@ class Rook
   end
 
   def move_valid?(start_square, end_square)
-    p "In Rook.move_valid Instance method!"
+    # p "In Rook.move_valid Instance method!"
     column_diff =  start_square[0] != end_square[0] if start_square[0] != end_square[0]
     row_diff = start_square[1] != end_square[1] if start_square[1] != end_square[1]
     diagonal = column_diff && row_diff

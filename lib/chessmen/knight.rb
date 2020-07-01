@@ -8,7 +8,7 @@ class Knight
   end
 
   def move_valid?(start_square, end_square)
-    p "In Knight.move_valid Instance method!"
+    # p "In Knight.move_valid Instance method!"
     column_diff =  (end_square[0].ord - start_square[0].ord).abs
     return "knight cant make this column move" if column_diff < 1 || column_diff > 2
     row_diff = (end_square[1].to_i - start_square[1].to_i).abs
