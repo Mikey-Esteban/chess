@@ -210,13 +210,3 @@ class Game
     result
   end
 end
-
-game = Game.new
-# p game.gb.board
-game.populate_board
-
-game.player_turn
-game.player_turn
-game.player_turn
-
-# game.print_game_board
