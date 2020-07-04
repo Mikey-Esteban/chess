@@ -42,6 +42,7 @@ class Game
       end
     end
     @gb.print_board
+
     @gb.board
   end
 
@@ -64,6 +65,13 @@ class Game
     else
       p flag
     end
+
+    white_king = grab_king('white')
+    black_king = grab_king('black')
+
+    puts "White is checked!" if is_check?(white_king) == true
+    puts "Black is checked!" if is_check?(black_king) == true
+
     populate_board
   end
 
@@ -121,11 +129,41 @@ class Game
     end
 
     p "Good move! #{start_node.name}:#{start_square} moves to #{end_square}"
-    return true
 
+    return true
   end
 
-  def is_node_between?(start_square, end_square, queen_checker = nil)
+  def is_check?(king_node)
+    puts "IN METHOD IS_CHECK?"
+    start_square = king_node.position
+    p start_square
+    directions = ['left', 'right', 'up', 'down', 'up_left', 'up_right',
+                  'down_left', 'down_right']
+
+    directions.each do |direction|
+      next_square = king_node.check_next_square(start_square, direction)
+      p next_square
+      # next_square will equal true if check_next_square returns at end of board
+      until next_square == true
+        next_node = grab_node(next_square)
+        if !next_node.nil?
+          if next_node.color != king_node.color
+            is_valid = next_node.move_valid?(next_square, start_square)
+            puts "This king is checked!"
+            return true if is_valid == true  || is_valid != 0   # This is a check, queen is_valid returns 0, -1, 1
+          elsif next_node.color == king_node.color
+            next_square = true
+          end
+        elsif next_node.nil? # && not at end of the board
+          next_square = king_node.check_next_square(next_square, direction)
+        end
+      end
+    end
+
+    false
+  end
+
+  def is_node_between?(start_square, end_square = nil, queen_checker = nil)
     start_node = @gb.board[start_square][1]
 
     if start_node.is_a?(Rook) || start_node.is_a?(Bishop)
@@ -163,6 +201,12 @@ class Game
 
   def grab_node(square)
     @gb.board[square][1]
+  end
+
+  def grab_king(color)
+    puts "In grab_king method"
+    return @player_white[:kings][0] if color == 'white'
+    return @player_black[:kings][0] if color == 'black'
   end
 
   def grab_chessmen_position_name
@@ -207,6 +251,8 @@ class Game
       end
       result = first+second+third+fourth
     end
+
     result
   end
+
 end
