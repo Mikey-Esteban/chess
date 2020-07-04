@@ -1,5 +1,8 @@
+require 'io/console'
+
 require './lib/game.rb'
 require './lib/save.rb'
+
 
 print "Would you like to load a previous game? (y/n): "
 asks_load = gets.chomp.downcase
@@ -7,19 +10,27 @@ asks_load = gets.chomp.downcase
 if asks_load == 'y'
   game = Save.load_game
   if game
-    puts "we will play 1 turn!"
-    game.populate_board
-    game.player_turn
+    puts "type 'q' to quit game"
+    loop do
+      print "'q' to quit: "
+      char = STDIN.getch
+      break if char == 'q'
+      game.populate_board
+      game.player_turn
+    end
   else
     puts "Sorry we couldnt find that game :("
   end
 else
   game = Game.new
-  # p game.gb.board
-  game.populate_board
-  game.player_turn
-  game.player_turn
-  game.player_turn
+  puts "type 'q' to quit game"
+  loop do
+    print "'q' to quit: "
+    char = STDIN.getch
+    break if char == 'q'
+    game.populate_board
+    game.player_turn
+  end
 end
 print "Save game? (y/n): "
 asks_save = gets.chomp.downcase
