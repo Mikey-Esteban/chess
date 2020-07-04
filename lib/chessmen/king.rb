@@ -13,6 +13,60 @@ class King
     row_diff = (end_square[1].to_i - start_square[1].to_i).abs
 
     return "King cant move that far away!" if column_diff > 1 || row_diff > 1
+
+    true
+  end
+
+  def check_next_square(start_square, direction)
+    # will either return end_of_board or next_square
+    col = start_square[0]
+    row = start_square[1]
+    next_square = ''
+    end_of_board = true
+
+    if direction == 'left'
+      puts "checking left..."
+      return end_of_board if start_square[0] == 'a'
+      next_square += (col.ord - 1).chr
+      next_square += row
+    elsif direction == 'right'
+      puts "checking right..."
+      return end_of_board if start_square[0] == 'h'
+      next_square += (col.ord + 1).chr
+      next_square += row
+    elsif direction == 'up'
+      puts "checking up..."
+      return end_of_board if start_square[1] == '8'
+      next_square += col
+      next_square += (row.to_i + 1).to_s
+    elsif direction == 'down'
+      puts "checking down..."
+      return end_of_board if start_square[1] == '1'
+      next_square += col
+      next_square += (row.to_i - 1).to_s
+    elsif direction == 'up_left'
+      puts "checking upleft..."
+      return end_of_board if start_square[0] == 'a' || start_square[1] == '8'
+      next_square += (col.ord - 1).chr
+      next_square += (row.to_i + 1).to_s
+    elsif direction == 'up_right'
+      puts "checking upright..."
+      return end_of_board if start_square[0] == 'h' || start_square[1] == '8'
+      next_square += (col.ord + 1).chr
+      next_square += (row.to_i + 1).to_s
+    elsif direction == 'down_left'
+      puts "checking downleft..."
+      return end_of_board if start_square[0] == 'a' || start_square[1] == '1'
+      next_square += (col.ord - 1).chr
+      next_square += (row.to_i - 1).to_s
+    elsif direction == 'down_right'
+      puts "checking downright..."
+      return end_of_board if start_square[0] == 'h' || start_square[1] == '1'
+      next_square += (col.ord + 1).chr
+      next_square += (row.to_i - 1).to_s
+    end
+
+    next_square
   end
 
 end
