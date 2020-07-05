@@ -69,8 +69,12 @@ class Game
     white_king = grab_king('white')
     black_king = grab_king('black')
 
-    puts "White is checked!" if is_check?(white_king) == true
-    puts "Black is checked!" if is_check?(black_king) == true
+    # puts "White is checked!" if is_check?(white_king) != false
+    # puts "Black is checked!" if is_check?(black_king) != false
+    boolean, node =  is_check?(white_king)
+    puts "White is checked by #{node.color.capitalize} #{node.name.capitalize}!" if boolean == true
+    boolean, node = is_check?(black_king)
+    puts "Black is checked by #{node.color.capitalize} #{node.name.capitalize}!" if boolean == true
 
     populate_board
   end
@@ -150,7 +154,7 @@ class Game
           if next_node.color != king_node.color
             is_valid = next_node.move_valid?(next_square, start_square)
             puts "This king is checked!"
-            return true if is_valid == true  || is_valid != 0   # This is a check, queen is_valid returns 0, -1, 1
+            return [true, next_node] if is_valid == true  || is_valid != 0   # This is a check, queen is_valid returns 0, -1, 1
           elsif next_node.color == king_node.color
             next_square = true
           end
@@ -160,7 +164,7 @@ class Game
       end
     end
 
-    false
+    return [false, nil]
   end
 
   def is_node_between?(start_square, end_square = nil, queen_checker = nil)
