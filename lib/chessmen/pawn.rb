@@ -1,23 +1,31 @@
 class Pawn
-  attr_accessor :position, :name, :color
+  attr_accessor :position, :name, :color, :has_moved
 
   def initialize(position, color)
     @name = 'pawn'
     @position = position
     @color = color
+    @has_moved = false
   end
 
   def move_valid?(start_square, end_square)
     # p "In Pawn.move_valid Instance method!"
     diff = end_square[1].to_i - start_square[1].to_i
-
     return "Pawn cant make a non vertical move!" if start_square[0] != end_square[0]
-    if self.color == 'white'
+
+    if diff.abs == 2
+      if self.color == 'white'
+        return "#{self.color} pawn can only move up by one" unless @has_moved == false
+      elsif self.color == 'black'
+        return "#{self.color} pawn can only move down by one" unless @has_moved == false
+      end
+    elsif self.color == 'white'
       return "#{self.color} pawn can only move up" unless diff == 1
     elsif self.color == 'black'
       return "#{self.color} pawn can only move down" unless diff == -1
     end
 
+    @has_moved = true
     true
   end
 
