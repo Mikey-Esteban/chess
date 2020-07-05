@@ -72,14 +72,43 @@ class Game
     # puts "White is checked!" if is_check?(white_king) != false
     # puts "Black is checked!" if is_check?(black_king) != false
     boolean, node =  is_check?(white_king)
-    puts "White is checked by #{node.color.capitalize} #{node.name.capitalize}!" if boolean == true
+    if boolean == true
+      puts "White is checked by #{node.color.capitalize} #{node.name.capitalize}!"
+      possible_moves = moves_to_stop_check(node, node.position, white_king.position)
+      p possible_moves
+    end
     boolean, node = is_check?(black_king)
-    puts "Black is checked by #{node.color.capitalize} #{node.name.capitalize}!" if boolean == true
+    if boolean == true
+      puts "Black is checked by #{node.color.capitalize} #{node.name.capitalize}!"
+      possible_moves = moves_to_stop_check(node, node.position, black_king.position)
+      p possible_moves
+    end
 
     populate_board
   end
 
   private
+
+  def moves_to_stop_check(attack_node, attack_square, king_square)
+    puts "in moves_to_stop_check function"
+    possible_moves = []
+    defending_player = @player_white if attack_node.color == 'black'
+    defending_player = @player_black if attack_node.color == 'white'
+    # Can we take over attack square
+    defending_player.each do |type, list_of_pieces|
+      list_of_pieces.each do |piece|
+        can_move = can_player_move?(piece.position, attack_square)
+        possible_moves << piece.position if can_move == true
+      end
+    end
+    # Can we move king out of king square to non check square
+    # Can we block path to king_square
+    # return a list of these possible mvoes
+    # if list is nil, checkmate??
+
+
+    return possible_moves
+  end
 
   def player_move(start_square, end_square)
     start_node = grab_node(start_square)
