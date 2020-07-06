@@ -17,6 +17,31 @@ class King
     true
   end
 
+  def check_knight_squares
+    cols = 'abdcefgh'
+    rows = '12345678'
+    possible_knights = [
+        {:col => 2, :row => 1 },
+        {:col => 2, :row => -1 },
+        {:col => -2, :row => 1 },
+        {:col => -2, :row => -1 },
+        {:col => 1, :row => 2 },
+        {:col => -1, :row => 2 },
+        {:col => 1, :row => -2 },
+        {:col => -1, :row => -2},
+    ]
+    result = []
+
+    possible_knights.each do |change|
+      square = ''
+      square += (@position[0].ord + change[:col]).chr
+      square += (@position[1].to_i + change[:row]).to_s
+      result << square if cols.include?(square[0]) && rows.include?(square[1]) && square.length == 2
+    end
+
+    result
+  end
+
   def check_next_square(start_square, direction)
     # will either return end_of_board or next_square
     col = start_square[0]
