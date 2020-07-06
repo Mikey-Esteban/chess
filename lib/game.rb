@@ -128,10 +128,11 @@ class Game
       end
     end
     # Can we block path to king_square
+
+
+
     # return a list of these possible mvoes
     # if list is nil, checkmate??
-
-
     return possible_moves
   end
 
@@ -238,6 +239,36 @@ class Game
       return true unless next_node.nil?
       is_node_between?(start_square, next_square, queen_checker)
     end
+  end
+
+  def squares_between(start_square, end_square = nil, queen_checker = nil)
+    start_node = @gb.board[start_square][1]
+    list_of_squares = []
+
+    if start_node.is_a?(Rook) || start_node.is_a?(Bishop)
+      loop do
+        next_square = start_node.check_next_square(start_square, end_square)
+        # next_node = grab_node(next_square)
+        break if next_square == end_square
+        list_of_squares << next_square
+      end
+      # return false if next_square == start_square
+      # return true unless next_node.nil?
+      # is_node_between?(start_square, next_square)
+    elsif start_node.is_a?(Queen)
+      loop do
+        next_square = start_node.check_next_square_diagonal(start_square, end_square) if queen_checker == 1
+        next_square = start_node.check_next_square_hv(start_square, end_square) if queen_checker == -1
+        # next_node = grab_node(next_square)
+        break if next_square == end_square
+        list_of_squares << next_square
+      end
+      # return false if next_square == start_square
+      # return true unless next_node.nil?
+      # is_node_between?(start_square, next_square, queen_checker)
+    end
+
+    return list_of_squares
   end
 
   def delete_chessman(node)
