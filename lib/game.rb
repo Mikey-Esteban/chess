@@ -73,6 +73,7 @@ class Game
         puts "#{pc.capitalize} is check by #{node.color.capitalize} #{node.name.capitalize}"
         possible_moves = moves_to_stop_check(node, node.position, king)
         p possible_moves
+        p is_checkmate?(possible_moves)
       end
     end
 
@@ -80,6 +81,12 @@ class Game
   end
 
   private
+
+
+  def is_checkmate?(possible_moves)
+    return true if possible_moves.nil?
+    false
+  end
 
   def ask_for_move
     loop do
