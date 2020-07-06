@@ -74,13 +74,13 @@ class Game
     boolean, node =  is_check?(white_king)
     if boolean == true
       puts "White is checked by #{node.color.capitalize} #{node.name.capitalize}!"
-      possible_moves = moves_to_stop_check(node, node.position, white_king.position)
+      possible_moves = moves_to_stop_check(node, node.position, white_king)
       p possible_moves
     end
     boolean, node = is_check?(black_king)
     if boolean == true
       puts "Black is checked by #{node.color.capitalize} #{node.name.capitalize}!"
-      possible_moves = moves_to_stop_check(node, node.position, black_king.position)
+      possible_moves = moves_to_stop_check(node, node.position, black_king)
       p possible_moves
     end
 
@@ -89,7 +89,7 @@ class Game
 
   private
 
-  def moves_to_stop_check(attack_node, attack_square, king_square)
+  def moves_to_stop_check(attack_node, attack_square, king_node)
     puts "in moves_to_stop_check function"
     possible_moves = []
     defending_player = @player_white if attack_node.color == 'black'
@@ -98,10 +98,33 @@ class Game
     defending_player.each do |type, list_of_pieces|
       list_of_pieces.each do |piece|
         can_move = can_player_move?(piece.position, attack_square)
-        possible_moves << piece.position if can_move == true
+        if can_move == true
+          move_to_make = [piece.position, attack_square]
+          possible_moves << move_to_make
+        end
       end
     end
     # Can we move king out of king square to non check square
+    directions = ['left', 'right', 'up', 'down', 'up_left', 'up_right',
+                  'down_left', 'down_right']
+
+    directions.each do |direction|
+      possible_square = king_node.check_next_square(king_node.position, direction)
+      if possible_square != true
+        possible_node = grab_node(possible_square)
+        if possible_node.nil?
+          puts "checking to see if king can move here..."
+          puts "possible square  #{possible_square}"
+          temp_king = King.new(possible_square, king_node.color)
+          boolean, node = is_check?(temp_king)
+          if boolean == false
+            puts "King can move to position #{possible_square}"
+            move_to_make = [king_node.position, possible_square]
+            possible_moves << move_to_make
+          end
+        end
+      end
+    end
     # Can we block path to king_square
     # return a list of these possible mvoes
     # if list is nil, checkmate??
