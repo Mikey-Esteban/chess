@@ -68,12 +68,16 @@ class Game
     players_colors = ['white', 'black']
     players_colors.each do |pc|
       king = grab_king(pc)
-      boolean, node = is_check?(king)
-      if boolean == true
-        puts "#{pc.capitalize} is check by #{node.color.capitalize} #{node.name.capitalize}"
-        possible_moves = moves_to_stop_check(node, node.position, king)
-        p possible_moves
-        p is_checkmate?(possible_moves)
+      # boolean, node = is_check?(king)
+      result = is_check?(king)
+      # if boolean == true
+      unless result.empty?
+        result.each do |node|
+          puts "#{pc.capitalize} is check by #{node.color.capitalize} #{node.name.capitalize}"
+          possible_moves = moves_to_stop_check(node, node.position, king)
+          p possible_moves
+          p is_checkmate?(possible_moves)
+        end
       end
     end
 
@@ -152,8 +156,8 @@ class Game
           # puts "checking to see if king can move here..."
           # puts "possible square #{possible_square}"
           temp_king = King.new(possible_square, king_node.color)
-          boolean, node = is_check?(temp_king)
-          if boolean == false
+          result = is_check?(temp_king)
+          if result.empty?
             puts "King can move to position #{possible_square}"
             move_to_make = [king_node.position, possible_square]
             possible_moves << move_to_make
@@ -229,6 +233,7 @@ class Game
     # p start_square
     directions = ['left', 'right', 'up', 'down', 'up_left', 'up_right',
                   'down_left', 'down_right']
+    result = []
 
     directions.each do |direction|
       next_square = king_node.check_next_square(start_square, direction)
@@ -239,8 +244,8 @@ class Game
         if !next_node.nil?
           if next_node.color != king_node.color
             is_valid = next_node.move_valid?(next_square, start_square)
-            # puts "This king is checked!"
-            return [true, next_node] if is_valid == true  || is_valid != 0   # This is a check, queen is_valid returns 0, -1, 1
+            result << next_node if is_valid == true  || is_valid != 0   # This is a check, queen is_valid returns 0, -1, 1
+            next_square = true
           elsif next_node.color == king_node.color
             next_square = true
           end
@@ -250,7 +255,15 @@ class Game
       end
     end
 
-    return [false, nil]
+    possible_knight_squares = king_node.check_knight_squares
+    if possible_knight_squares
+      possible_knight_squares.each do |square|
+        node = grab_node(square)
+        result << node if node.is_a?(Knight) && node.color != king_node.color
+      end
+    end
+
+    return result
   end
 
   def is_node_between?(start_square, end_square = nil, queen_checker = nil)
