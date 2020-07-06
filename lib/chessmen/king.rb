@@ -25,42 +25,42 @@ class King
     end_of_board = true
 
     if direction == 'left'
-      puts "checking left..."
+      # puts "checking left..."
       return end_of_board if start_square[0] == 'a'
       next_square += (col.ord - 1).chr
       next_square += row
     elsif direction == 'right'
-      puts "checking right..."
+      # puts "checking right..."
       return end_of_board if start_square[0] == 'h'
       next_square += (col.ord + 1).chr
       next_square += row
     elsif direction == 'up'
-      puts "checking up..."
+      # puts "checking up..."
       return end_of_board if start_square[1] == '8'
       next_square += col
       next_square += (row.to_i + 1).to_s
     elsif direction == 'down'
-      puts "checking down..."
+      # puts "checking down..."
       return end_of_board if start_square[1] == '1'
       next_square += col
       next_square += (row.to_i - 1).to_s
     elsif direction == 'up_left'
-      puts "checking upleft..."
+      # puts "checking upleft..."
       return end_of_board if start_square[0] == 'a' || start_square[1] == '8'
       next_square += (col.ord - 1).chr
       next_square += (row.to_i + 1).to_s
     elsif direction == 'up_right'
-      puts "checking upright..."
+      # puts "checking upright..."
       return end_of_board if start_square[0] == 'h' || start_square[1] == '8'
       next_square += (col.ord + 1).chr
       next_square += (row.to_i + 1).to_s
     elsif direction == 'down_left'
-      puts "checking downleft..."
+      # puts "checking downleft..."
       return end_of_board if start_square[0] == 'a' || start_square[1] == '1'
       next_square += (col.ord - 1).chr
       next_square += (row.to_i - 1).to_s
     elsif direction == 'down_right'
-      puts "checking downright..."
+      # puts "checking downright..."
       return end_of_board if start_square[0] == 'h' || start_square[1] == '1'
       next_square += (col.ord + 1).chr
       next_square += (row.to_i - 1).to_s
