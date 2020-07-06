@@ -47,17 +47,7 @@ class Game
   end
 
   def player_turn
-    cols = 'abcdefgh'
-    rows = '12345678'
-
-    while true
-      puts "Play move from start square to end square eg. 'a5 to a6'"
-      print "What is your move? "
-      player_decision = gets.chomp
-      start, fin = player_decision.split(' to ')
-      break if cols.include?(start[0]) && rows.include?(start[1]) && cols.include?(fin[0]) && rows.include?(fin[1])
-      puts "Sorry, please enter a valid input! :)"
-    end
+    start, fin = ask_for_move
 
     flag = can_player_move?(start, fin)
     if flag == true
@@ -88,6 +78,22 @@ class Game
   end
 
   private
+
+  def ask_for_move
+    cols = 'abcdefgh'
+    rows = '12345678'
+
+    while true
+      puts "Play move from start square to end square eg. 'a5 to a6'"
+      print "What is your move? "
+      player_decision = gets.chomp
+      start, fin = player_decision.split(' to ')
+      break if cols.include?(start[0]) && rows.include?(start[1]) && cols.include?(fin[0]) && rows.include?(fin[1])
+      puts "Sorry, please enter a valid input! :)"
+    end
+
+    return start, fin
+  end
 
   def moves_to_stop_check(attack_node, attack_square, king_node)
     puts "in moves_to_stop_check function"
