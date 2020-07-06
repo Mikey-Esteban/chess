@@ -62,7 +62,6 @@ class Game
     end
 
     players_colors = ['white', 'black']
-
     players_colors.each do |pc|
       king = grab_king(pc)
       boolean, node = is_check?(king)
@@ -72,25 +71,6 @@ class Game
         p possible_moves
       end
     end
-
-
-    # white_king = grab_king('white')
-    # black_king = grab_king('black')
-    #
-    # # puts "White is checked!" if is_check?(white_king) != false
-    # # puts "Black is checked!" if is_check?(black_king) != false
-    # boolean, node =  is_check?(white_king)
-    # if boolean == true
-    #   puts "White is checked by #{node.color.capitalize} #{node.name.capitalize}!"
-    #   possible_moves = moves_to_stop_check(node, node.position, white_king)
-    #   p possible_moves
-    # end
-    # boolean, node = is_check?(black_king)
-    # if boolean == true
-    #   puts "Black is checked by #{node.color.capitalize} #{node.name.capitalize}!"
-    #   possible_moves = moves_to_stop_check(node, node.position, black_king)
-    #   p possible_moves
-    # end
 
     populate_board
   end
