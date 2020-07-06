@@ -83,7 +83,7 @@ class Game
     cols = 'abcdefgh'
     rows = '12345678'
 
-    while true
+    loop do
       puts "Play move from start square to end square eg. 'a5 to a6'"
       print "What is your move? "
       player_decision = gets.chomp
