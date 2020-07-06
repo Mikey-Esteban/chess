@@ -47,32 +47,50 @@ class Game
   end
 
   def player_turn
-    start, fin = ask_for_move
-
-    flag = can_player_move?(start, fin)
-    if flag == true
-      player_move(start, fin)
-    else
-      p flag
+    loop do
+      begin
+        start, fin = ask_for_move
+        flag = can_player_move?(start, fin)
+        if flag == true
+          player_move(start, fin)
+          break
+        end
+        p flag
+      rescue NoMethodError
+        puts "Sorry, invalid move. Trying again.."
+      end
     end
 
-    white_king = grab_king('white')
-    black_king = grab_king('black')
+    players_colors = ['white', 'black']
 
-    # puts "White is checked!" if is_check?(white_king) != false
-    # puts "Black is checked!" if is_check?(black_king) != false
-    boolean, node =  is_check?(white_king)
-    if boolean == true
-      puts "White is checked by #{node.color.capitalize} #{node.name.capitalize}!"
-      possible_moves = moves_to_stop_check(node, node.position, white_king)
-      p possible_moves
+    players_colors.each do |pc|
+      king = grab_king(pc)
+      boolean, node = is_check?(king)
+      if boolean == true
+        puts "#{pc.capitalize} is check by #{node.color.capitalize} #{node.name.capitalize}"
+        possible_moves = moves_to_stop_check(node, node.position, king)
+        p possible_moves
+      end
     end
-    boolean, node = is_check?(black_king)
-    if boolean == true
-      puts "Black is checked by #{node.color.capitalize} #{node.name.capitalize}!"
-      possible_moves = moves_to_stop_check(node, node.position, black_king)
-      p possible_moves
-    end
+
+
+    # white_king = grab_king('white')
+    # black_king = grab_king('black')
+    #
+    # # puts "White is checked!" if is_check?(white_king) != false
+    # # puts "Black is checked!" if is_check?(black_king) != false
+    # boolean, node =  is_check?(white_king)
+    # if boolean == true
+    #   puts "White is checked by #{node.color.capitalize} #{node.name.capitalize}!"
+    #   possible_moves = moves_to_stop_check(node, node.position, white_king)
+    #   p possible_moves
+    # end
+    # boolean, node = is_check?(black_king)
+    # if boolean == true
+    #   puts "Black is checked by #{node.color.capitalize} #{node.name.capitalize}!"
+    #   possible_moves = moves_to_stop_check(node, node.position, black_king)
+    #   p possible_moves
+    # end
 
     populate_board
   end
@@ -88,11 +106,9 @@ class Game
       print "What is your move? "
       player_decision = gets.chomp
       start, fin = player_decision.split(' to ')
-      break if cols.include?(start[0]) && rows.include?(start[1]) && cols.include?(fin[0]) && rows.include?(fin[1])
+      return start, fin if cols.include?(start[0]) && rows.include?(start[1]) && cols.include?(fin[0]) && rows.include?(fin[1])
       puts "Sorry, please enter a valid input! :)"
     end
-
-    return start, fin
   end
 
   def moves_to_stop_check(attack_node, attack_square, king_node)
@@ -119,8 +135,8 @@ class Game
       if possible_square != true
         possible_node = grab_node(possible_square)
         if possible_node.nil?
-          puts "checking to see if king can move here..."
-          puts "possible square  #{possible_square}"
+          # puts "checking to see if king can move here..."
+          # puts "possible square #{possible_square}"
           temp_king = King.new(possible_square, king_node.color)
           boolean, node = is_check?(temp_king)
           if boolean == false
@@ -196,15 +212,15 @@ class Game
   end
 
   def is_check?(king_node)
-    puts "IN METHOD IS_CHECK?"
+    # puts "IN METHOD IS_CHECK?"
     start_square = king_node.position
-    p start_square
+    # p start_square
     directions = ['left', 'right', 'up', 'down', 'up_left', 'up_right',
                   'down_left', 'down_right']
 
     directions.each do |direction|
       next_square = king_node.check_next_square(start_square, direction)
-      p next_square
+      # p next_square
       # next_square will equal true if check_next_square returns at end of board
       until next_square == true
         next_node = grab_node(next_square)
@@ -266,7 +282,7 @@ class Game
   end
 
   def grab_king(color)
-    puts "In grab_king method"
+    # puts "In grab_king method"
     return @player_white[:kings][0] if color == 'white'
     return @player_black[:kings][0] if color == 'black'
   end
