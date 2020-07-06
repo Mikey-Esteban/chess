@@ -49,15 +49,19 @@ class Game
   def player_turn
     loop do
       begin
-        start, fin = ask_for_move
+        result = ask_for_move
+        return result if result == 'q'
+        start, fin = result
         flag = can_player_move?(start, fin)
         if flag == true
           player_move(start, fin)
           break
         end
         p flag
+        puts ""
       rescue NoMethodError
         puts "Sorry, invalid move. Trying again.."
+        puts ""
       end
     end
 
@@ -78,16 +82,22 @@ class Game
   private
 
   def ask_for_move
-    cols = 'abcdefgh'
-    rows = '12345678'
-
     loop do
+      cols = 'abcdefgh'
+      rows = '12345678'
       puts "Play move from start square to end square eg. 'a5 to a6'"
-      print "What is your move? "
+      print "What is your move? (enter 'q' to quit): "
+
       player_decision = gets.chomp
-      start, fin = player_decision.split(' to ')
-      return start, fin if cols.include?(start[0]) && rows.include?(start[1]) && cols.include?(fin[0]) && rows.include?(fin[1])
+      return player_decision if player_decision == 'q'
+      if player_decision.length > 1
+        start, fin = player_decision.split(' to ')
+        if start.length == 2 && fin.length == 2
+          return start, fin if cols.include?(start[0]) && rows.include?(start[1]) && cols.include?(fin[0]) && rows.include?(fin[1])
+        end
+      end
       puts "Sorry, please enter a valid input! :)"
+      puts ""
     end
   end
 
@@ -96,13 +106,30 @@ class Game
     possible_moves = []
     defending_player = @player_white if attack_node.color == 'black'
     defending_player = @player_black if attack_node.color == 'white'
-    # Can we take over attack square
+    # Can we block path to king_square
+    queen_checker = attack_node.move_valid?(attack_square, king_node.position) if attack_node.is_a?(Queen)
+    queen_checker = nil if !attack_node.is_a?(Queen)
+    path_to_block = squares_between(attack_square, king_node.position, queen_checker)
+    # p path_to_block
+
+    # Can we take over attack square or put piece in path
     defending_player.each do |type, list_of_pieces|
       list_of_pieces.each do |piece|
-        can_move = can_player_move?(piece.position, attack_square)
-        if can_move == true
+        can_take = can_player_move?(piece.position, attack_square)
+        if can_take == true
           move_to_make = [piece.position, attack_square]
           possible_moves << move_to_make
+        end
+        unless path_to_block.nil?
+          unless piece.name == 'king'
+            path_to_block.each do |square|
+              can_block = can_player_move?(piece.position, square)
+              if can_block == true
+                move_to_make = [piece.position, square]
+                possible_moves << move_to_make
+              end
+            end
+          end
         end
       end
     end
@@ -127,9 +154,6 @@ class Game
         end
       end
     end
-    # Can we block path to king_square
-
-
 
     # return a list of these possible mvoes
     # if list is nil, checkmate??
@@ -208,7 +232,7 @@ class Game
         if !next_node.nil?
           if next_node.color != king_node.color
             is_valid = next_node.move_valid?(next_square, start_square)
-            puts "This king is checked!"
+            # puts "This king is checked!"
             return [true, next_node] if is_valid == true  || is_valid != 0   # This is a check, queen is_valid returns 0, -1, 1
           elsif next_node.color == king_node.color
             next_square = true
@@ -248,24 +272,20 @@ class Game
     if start_node.is_a?(Rook) || start_node.is_a?(Bishop)
       loop do
         next_square = start_node.check_next_square(start_square, end_square)
-        # next_node = grab_node(next_square)
-        break if next_square == end_square
+        # p next_square
+        break if next_square == start_square
         list_of_squares << next_square
+        end_square = next_square
       end
-      # return false if next_square == start_square
-      # return true unless next_node.nil?
-      # is_node_between?(start_square, next_square)
     elsif start_node.is_a?(Queen)
       loop do
         next_square = start_node.check_next_square_diagonal(start_square, end_square) if queen_checker == 1
         next_square = start_node.check_next_square_hv(start_square, end_square) if queen_checker == -1
-        # next_node = grab_node(next_square)
-        break if next_square == end_square
+        # p next_square
+        break if next_square == start_square
         list_of_squares << next_square
+        end_square = next_square
       end
-      # return false if next_square == start_square
-      # return true unless next_node.nil?
-      # is_node_between?(start_square, next_square, queen_checker)
     end
 
     return list_of_squares

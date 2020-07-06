@@ -10,26 +10,24 @@ asks_load = gets.chomp.downcase
 if asks_load == 'y'
   game = Save.load_game
   if game
-    puts "type 'q' to quit game"
     loop do
-      print "'q' to quit: "
-      char = STDIN.getch
-      break if char == 'q'
       game.populate_board
-      game.player_turn
+      checker = game.player_turn
+      break if checker == 'q'
     end
   else
     puts "Sorry we couldnt find that game :("
   end
 else
   game = Game.new
-  puts "type 'q' to quit game"
+  # puts "type 'q' to quit game"
   loop do
-    print "'q' to quit: "
-    char = STDIN.getch
-    break if char == 'q'
+    # print "'q' to quit: "
+    # char = STDIN.getch
+    # break if char == 'q'
     game.populate_board
-    game.player_turn
+    checker = game.player_turn
+    break if checker == 'q'
   end
 end
 print "Save game? (y/n): "
