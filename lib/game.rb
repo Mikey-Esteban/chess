@@ -83,7 +83,7 @@ class Game
             end
           else
             puts "No possible moves for #{king.name} to escape attacking #{node.name}"
-            p is_checkmate(list_of_moves)
+            p is_checkmate?(list_of_moves)
           end
         end
         p possible_moves
@@ -170,7 +170,7 @@ class Game
       possible_square = king_node.check_next_square(king_node.position, direction)
       if possible_square != true
         possible_node = grab_node(possible_square)
-        if possible_node.nil?
+        if possible_node.nil? || possible_node.color != king_node.color
           # puts "checking to see if king can move here..."
           # puts "possible square #{possible_square}"
           temp_king = King.new(possible_square, king_node.color)
