@@ -5,6 +5,7 @@ class King
     @name = 'king'
     @position = position
     @color = color
+    @has_moved = false
   end
 
   def move_valid?(start_square, end_square)
@@ -14,6 +15,7 @@ class King
 
     return "King cant move that far away!" if column_diff > 1 || row_diff > 1
 
+    @has_moved = true
     true
   end
 

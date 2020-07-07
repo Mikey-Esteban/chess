@@ -5,6 +5,7 @@ class Rook
     @name = 'rook'
     @position = position
     @color = color
+    @has_moved = false
   end
 
   def move_valid?(start_square, end_square)
@@ -14,6 +15,7 @@ class Rook
     diagonal = column_diff && row_diff
     return "#{self.name} cant make a diagonal move" if diagonal
 
+    @has_moved = true
     true
   end
 
