@@ -13,7 +13,7 @@ if asks_load == 'y'
     loop do
       game.populate_board
       checker = game.player_turn
-      break if checker == 'q'
+      break if checker == 'q' #|| checker == 'You lost!'
     end
   else
     puts "Sorry we couldnt find that game :("
@@ -27,7 +27,7 @@ else
     # break if char == 'q'
     game.populate_board
     checker = game.player_turn
-    break if checker == 'q'
+    break if checker == 'q' #|| checker == 'You lost!'
   end
 end
 print "Save game? (y/n): "

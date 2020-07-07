@@ -11,7 +11,7 @@ class Bishop
     # p "In Bishop.move_valid Instance method!"
     same_row = true if start_square[1] == end_square[1]
     same_column = true if start_square[0] == end_square[0]
-    return "#{self.name} cant make a non diagonal move" if same_column || same_row
+    return "#{self.name} cant make a non diagonal move" if same_column == true || same_row == true
 
     column_diff =  (end_square[0].ord - start_square[0].ord).abs
     row_diff = (end_square[1].to_i - start_square[1].to_i).abs

@@ -69,15 +69,25 @@ class Game
     players_colors.each do |pc|
       king = grab_king(pc)
       # boolean, node = is_check?(king)
-      result = is_check?(king)
+      list_of_nodes = is_check?(king)
+      p list_of_nodes
       # if boolean == true
-      unless result.empty?
-        result.each do |node|
+      unless list_of_nodes.empty?
+        possible_moves = []
+        list_of_nodes.each do |node|
           puts "#{pc.capitalize} is check by #{node.color.capitalize} #{node.name.capitalize}"
-          possible_moves = moves_to_stop_check(node, node.position, king)
-          p possible_moves
-          p is_checkmate?(possible_moves)
+          list_of_moves = moves_to_stop_check(node, node.position, king)
+          if !list_of_moves.empty?
+            list_of_moves.each do |move|
+              possible_moves << move
+            end
+          else
+            puts "No possible moves for #{king.name} to escape attacking #{node.name}"
+            p is_checkmate(list_of_moves)
+          end
         end
+        p possible_moves
+        p is_checkmate?(possible_moves)
       end
     end
 
@@ -86,9 +96,12 @@ class Game
 
   private
 
+  def gameover
+    "You lost!"
+  end
 
   def is_checkmate?(possible_moves)
-    return true if possible_moves.nil?
+    return true if possible_moves.empty?
     false
   end
 
@@ -120,7 +133,12 @@ class Game
     # Can we block path to king_square
     queen_checker = attack_node.move_valid?(attack_square, king_node.position) if attack_node.is_a?(Queen)
     queen_checker = nil if !attack_node.is_a?(Queen)
-    path_to_block = squares_between(attack_square, king_node.position, queen_checker)
+
+    if attack_node.is_a?(Queen) || attack_node.is_a?(Rook) || attack_node.is_a?(Bishop)
+      path_to_block = squares_between(attack_square, king_node.position, queen_checker)
+    else
+      path_to_block = nil
+    end
     # p path_to_block
 
     # Can we take over attack square or put piece in path
@@ -242,9 +260,11 @@ class Game
       until next_square == true
         next_node = grab_node(next_square)
         if !next_node.nil?
+          # if next_node.is_a?(Knight) # can stop here, knight in way
+          #   next_square = true
           if next_node.color != king_node.color
             is_valid = next_node.move_valid?(next_square, start_square)
-            result << next_node if is_valid == true  || is_valid != 0   # This is a check, queen is_valid returns 0, -1, 1
+            result << next_node if is_valid == true  || is_valid == 1 || is_valid == -1   # This is a check, queen is_valid returns 0, -1, 1
             next_square = true
           elsif next_node.color == king_node.color
             next_square = true
