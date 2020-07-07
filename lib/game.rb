@@ -56,6 +56,8 @@ class Game
         if flag == true
           player_move(start, fin)
           break
+        elsif flag == 'castle'
+          break
         end
         p flag
         puts ""
@@ -210,11 +212,39 @@ class Game
 
   def can_player_move?(start_square, end_square)
     start_node = grab_node(start_square)
+    p start_node
     end_node = grab_node(end_square)
+    p end_node
+    unless start_node.is_a?(King)
+      return "Your own piece is in the way!" if start_node && end_node && start_node.color == end_node.color #start_node && end_node &&
+    end
+    puts "past can player move checker"
+    if start_node.is_a?(King)
+      return "Your own piece is in the way!" if start_node && end_node && start_node.color == end_node.color
+      if start_node.has_moved == false
+        col_diff = (end_square[0].ord - start_square[0].ord).abs
+        row_diff = end_square[1].to_i - start_square[1].to_i
 
-    return "Your own piece is in the way!" if start_node && end_node && start_node.color == end_node.color
-
-    if start_node.is_a?(Pawn) && !end_node.nil?
+        if col_diff == 2 && row_diff == 0
+          result = can_castle?(start_node, end_square)
+          return result if result == "bad castle"
+          p result
+          rook_node, rook_square = result[0], result[1]
+          p rook_node
+          p rook_square
+          castle_move(start_node, end_square, rook_node, rook_square)
+          return "castle"
+        else
+          p "In Else king_is_valid_checker"
+          is_valid = start_node.move_valid?(start_square, end_square)
+          p is_valid
+          return is_valid if is_valid != true
+        end
+      else
+        is_valid = start_node.move_valid?(start_square, end_square)
+        return is_valid if is_valid != true
+      end
+    elsif start_node.is_a?(Pawn) && !end_node.nil?
       is_valid = start_node.pawn_take_valid?(start_square, end_square)
       return is_valid if is_valid != true
       # p "dont need to check node between for #{start_node.name}"
@@ -228,7 +258,7 @@ class Game
       end
       # p "is node between?: #{result}"
       return "#{start_node.name} cant make that move!" if result
-    elsif start_node.is_a?(King) || start_node.is_a?(Knight) || start_node.is_a?(Pawn)
+    elsif start_node.is_a?(Knight) || start_node.is_a?(Pawn) # || start_node.is_a?(King)
       is_valid = start_node.move_valid?(start_square, end_square)
       return is_valid if is_valid != true
       # p "dont need to check node between for #{start_node.name}"
@@ -284,6 +314,62 @@ class Game
     end
 
     return result
+  end
+
+  def castle_move(king_node, king_square_end, rook_node, rook_square_end)
+    puts "in castle move"
+    king_square_start = king_node.position
+    p king_square_start
+    rook_square_start = rook_node.position
+    p rook_square_start
+    # Change each start square-node pair to equal empty board
+    update_king_square_start =  @gb.empty_board[king_square_start][0]
+    update_king_node_start = @gb.empty_board[king_square_start][1]
+    update_rook_square_start = @gb.empty_board[rook_square_start][0]
+    update_rook_node_start = @gb.empty_board[rook_square_start][1]
+
+    # update_king_square_end = @gb.empty_board[king_square_end][0]
+    # update_rook_square_end = @gb.empty_board[rook_square_end][0]
+
+    @gb.board[king_square_end][1] = king_node                   # change the node value of king_square_end_node occupancy to king_node
+    @gb.board[king_square_end][1].position = king_square_end    # update the king_node position from king_square_start to king_square_end
+    @gb.board[rook_square_end][1] = rook_node                   # change the node value of rook_square_end_node occupancy to rook_node
+    @gb.board[rook_square_end][1].position = rook_square_end    # update the rook_node position from rook_square_start to rook_square_end
+
+    # @gb.board[king_square_end][0] = update_king_square_end
+    # @gb.board[rook_square_end][0] = update_rook_square_end
+
+    @gb.board[king_square_start][0] = update_king_square_start  # update the king_square_start block to equal its empty_board version block
+    @gb.board[king_square_start][1] = update_king_node_start   # update the king_square_start node to equal its empty_board version node
+    @gb.board[rook_square_start][0] = update_rook_square_start  # update the rook_square_start block to equal its empty_board version block
+    @gb.board[rook_square_start][1] = update_rook_node_start   # update the rook_square_start node to equal its empty_board version node
+
+    @gb.board
+  end
+
+  def can_castle?(king_node, end_square)
+    p "in can_castle"
+    # return error message if false else,
+    # returns rook_node & sqaure where rook will move into
+    row = '1' if king_node.color == 'white'
+    row = '8' if king_node.color == 'black'
+
+    return "bad castle" unless end_square == 'g1' || end_square == 'c1' || end_square == 'g8' || end_square == 'c8'
+
+    if end_square[0] == 'g'
+      rook = grab_node('h'+row)
+      f_node = grab_node('f'+row)
+      return "bad castle" unless rook.has_moved == false && f_node.nil?
+      puts "Good castle! king can move to g#{row}"
+      return [rook, 'f'+row]
+    elsif end_square[0] == 'c'
+      rook = grab_node('a'+row)
+      b_node = grab_node('b'+row)
+      d_node = grab_node('d'+row)
+      return "bad castle" unless rook.has_moved == false && b_node.nil? && d_node.nil?
+      puts "Good castle! king can move to b#{row}"
+      return [rook, 'd'+row]
+    end
   end
 
   def is_node_between?(start_square, end_square = nil, queen_checker = nil)

@@ -1,5 +1,5 @@
 class Rook
-  attr_accessor :position, :name, :color
+  attr_accessor :position, :name, :color, :has_moved
 
   def initialize(position, color)
     @name = 'rook'
