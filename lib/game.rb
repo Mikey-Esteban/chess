@@ -70,10 +70,8 @@ class Game
     players_colors = ['white', 'black']
     players_colors.each do |pc|
       king = grab_king(pc)
-      # boolean, node = is_check?(king)
       list_of_nodes = is_check?(king)
-      p list_of_nodes
-      # if boolean == true
+
       unless list_of_nodes.empty?
         possible_moves = []
         list_of_nodes.each do |node|
@@ -328,16 +326,10 @@ class Game
     update_rook_square_start = @gb.empty_board[rook_square_start][0]
     update_rook_node_start = @gb.empty_board[rook_square_start][1]
 
-    # update_king_square_end = @gb.empty_board[king_square_end][0]
-    # update_rook_square_end = @gb.empty_board[rook_square_end][0]
-
     @gb.board[king_square_end][1] = king_node                   # change the node value of king_square_end_node occupancy to king_node
     @gb.board[king_square_end][1].position = king_square_end    # update the king_node position from king_square_start to king_square_end
     @gb.board[rook_square_end][1] = rook_node                   # change the node value of rook_square_end_node occupancy to rook_node
     @gb.board[rook_square_end][1].position = rook_square_end    # update the rook_node position from rook_square_start to rook_square_end
-
-    # @gb.board[king_square_end][0] = update_king_square_end
-    # @gb.board[rook_square_end][0] = update_rook_square_end
 
     @gb.board[king_square_start][0] = update_king_square_start  # update the king_square_start block to equal its empty_board version block
     @gb.board[king_square_start][1] = update_king_node_start   # update the king_square_start node to equal its empty_board version node
